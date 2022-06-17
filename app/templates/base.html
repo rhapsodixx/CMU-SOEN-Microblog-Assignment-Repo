@@ -4,6 +4,12 @@
     {% if title %}{{ title }} - Microblog{% else %}{{ _('Welcome to Microblog') }}{% endif %}
 {% endblock %}
 
+{%- block metas %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Microblog">
+<meta name="keywords" content="Microblog">
+{%- endblock metas %}
+
 {% block navbar %}
     <nav class="navbar navbar-default">
         <div class="container">
