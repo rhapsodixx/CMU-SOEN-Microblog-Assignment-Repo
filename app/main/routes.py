@@ -11,6 +11,10 @@ from app.models import User, Post, Message, Notification
 from app.translate import translate
 from app.main import bp
 
+import logging
+logging.basicConfig(filename='std.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 @bp.before_app_request
 def before_request():
@@ -92,14 +96,18 @@ def user_popup(username):
 @login_required
 def edit_profile():
     form = EditProfileForm(current_user.username)
+    logger.info(current_user)
+
     if form.validate_on_submit():
         current_user.username = form.username.data
+        current_user.email = form.email.data
         current_user.about_me = form.about_me.data
         db.session.commit()
         flash(_('Your changes have been saved.'))
         return redirect(url_for('main.edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
+        form.email.data = current_user.email
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title=_('Edit Profile'),
                            form=form)
